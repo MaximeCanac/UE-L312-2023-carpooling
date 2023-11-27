@@ -104,4 +104,76 @@ class DataBaseService
 
         return $isOk;
     }
+
+    public function createAnnouncement(int $userId, int $carId, string $destination, DateTime $date, ?string $description, ?float $price): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'user_id' => $userId,
+            'car_id' => $carId,
+            'destination' => $destination,
+            'date' => $date->format(DateTime::RFC3339),
+            'description' => $description,
+            'price' => $price
+        ];
+
+        $sql = 'INSERT INTO announcements (user_id, car_id, destination, date, description, price) VALUES (:user_id, :car_id, :destination, :date, :description, :price)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    public function getAnnouncements(): array
+    {
+        $announcements = [];
+
+        $sql = 'SELECT * FROM announcements';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($results)) {
+            $announcements = $results;
+        }
+
+        return $announcements;
+    }
+
+    public function updateAnnouncement(int $id, int $userId, int $carId, string $destination, DateTime $date, ?string $description, ?float $price): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+            'user_id' => $userId,
+            'car_id' => $carId,
+            'destination' => $destination,
+            'date' => $date->format(DateTime::RFC3339),
+            'description' => $description,
+            'price' => $price
+        ];
+
+        $sql = 'UPDATE announcements SET user_id = :user_id, car_id = :car_id, destination = :destination, date = :date, description = :description, price = :price WHERE id = :id';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    public function deleteAnnouncement(int $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+
+        $sql = 'DELETE FROM announcements WHERE id = :id';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
 }

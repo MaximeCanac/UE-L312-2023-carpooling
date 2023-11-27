@@ -2,9 +2,9 @@
 
 namespace App\Controllers;
 
-use App\Services\UsersService;
+use App\Services\AnnouncementsService;
 
-class AnnouncementController
+class AnnouncementsController
 {
     /**
      * Return the html for the create action.
@@ -14,8 +14,8 @@ class AnnouncementController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['id_user']) &&
-            isset($_POST['id_car']) &&
+        if (isset($_POST['user_id']) &&
+            isset($_POST['car_id']) &&
             isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
@@ -24,8 +24,8 @@ class AnnouncementController
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
                 null,
-                $_POST['id_user'],
-                $_POST['id_car'],
+                $_POST['user_id'],
+                $_POST['car_id'],
                 $_POST['destination'],
                 $_POST['date'],
                 $_POST['description'],
@@ -49,15 +49,15 @@ class AnnouncementController
         $html = '';
 
         // Get all announcements :
-        $announcementService = new AnnouncementsService();
+        $announcementsService = new AnnouncementsService();
         $announcements = $announcementsService->getAnnouncements();
 
         // Get html :
         foreach ($announcements as $announcement) {
             $html .=
                 '#' . $announcement->getId() . ' ' .
-                $announcement->getIdUser() . ' ' .
-                $announcement->getIdCar() . ' ' .
+                $announcement->getUserId() . ' ' .
+                $announcement->getCarId() . ' ' .
                 $announcement->getDestination() . ' ' .
                 $announcement->getDate()->format('d-m-Y') . ' ' .
                 $announcement->getDescription() . ' ' .
@@ -75,8 +75,8 @@ class AnnouncementController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['id_user']) &&
-            isset($_POST['id_car']) &&
+        if (isset($_POST['user_id']) &&
+            isset($_POST['car_id']) &&
             isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
@@ -84,8 +84,8 @@ class AnnouncementController
             // Update the user :
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
-                $_POST['id_user'],
-                $_POST['id_car'],
+                $_POST['user_id'],
+                $_POST['car_id'],
                 $_POST['destination'],
                 $_POST['date'],
                 $_POST['description'],

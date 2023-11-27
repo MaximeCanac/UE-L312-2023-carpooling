@@ -1,26 +1,32 @@
 <?php
 
-use App\Controllers\UsersController;
+use App\Controllers\AnnouncementsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$controller = new UsersController();
-echo $controller->createUser();
+$controller = new AnnouncementsController();
+echo $controller->createAnnouncement();
 ?>
 
-<p>Création d'un utilisateur</p>
-<form method="post" action="users_create.php" name ="userCreateForm">
-    <label for="firstname">Prénom :</label>
-    <input type="text" name="firstname">
+<p>Création d'une annonce</p>
+<form method="post" action="announcements_create.php" name ="announcementCreateForm">
+    <label for="user_id">user_id :</label>
+    <input type="text" name="user_id">
     <br />
-    <label for="lastname">Nom :</label>
-    <input type="text" name="lastname">
+    <label for="car_id">car_id :</label>
+    <input type="text" name="car_id">
     <br />
-    <label for="email">Email :</label>
-    <input type="text" name="email">
+    <label for="destination">destination :</label>
+    <input type="text" name="destination">
     <br />
-    <label for="birthday">Date d'anniversaire au format dd-mm-yyyy :</label>
-    <input type="text" name="birthday">
+    <label for="date">Date du départ au format dd-mm-yyyy :</label>
+    <input type="text" name="date">
     <br />
-    <input type="submit" value="Créer un utilisateur">
+    <label for="description">description :</label>
+    <input type="text" name="description">
+    <br />
+    <label for="price">price :</label>
+    <input type="float" name="price">
+    <br />
+    <input type="submit" value="Créer une annonce">
 </form>

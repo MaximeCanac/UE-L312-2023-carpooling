@@ -1,8 +1,8 @@
 <?php
 
-use App\Controllers\UsersController;
+use App\Controllers\AnnouncementsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$controller = new UsersController();
-echo $controller->getUsers();
+$controller = new AnnouncementsController();
+echo $controller->getAnnouncements();
