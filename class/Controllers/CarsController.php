@@ -44,7 +44,7 @@ class CarsController
     {
         $html = '';
 
-        // Get all announcements :
+        // Get all cars :
         $carsService = new CarsService();
         $cars = $carsService->getCars();
 
