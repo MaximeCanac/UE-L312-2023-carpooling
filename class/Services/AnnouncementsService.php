@@ -8,25 +8,25 @@ use DateTime;
 class AnnouncementsService
 {
     /**
-     * Create or update an user.
+     * Create or update an Announcement.
      */
-    public function setAnnouncement(?string $id, string $id_user, string $id_car, string $destination, string $date, string $description, string $price): bool
+    public function setAnnouncement(?string $id, string $user_id, string $car_id, string $destination, string $date, string $description, string $price): bool
     {
         $isOk = false;
 
         $dataBaseService = new DataBaseService();
         $dateDateTime = new DateTime($date);
         if (empty($id)) {
-            $isOk = $dataBaseService->createAnnouncement($id_user, $id_car, $destination, $dateDateTime, $description, $price);
+            $isOk = $dataBaseService->createAnnouncement($user_id, $car_id, $destination, $dateDateTime, $description, $price);
         } else {
-            $isOk = $dataBaseService->updateAnnouncement($id, $id_user, $id_car, $destination, $dateDateTime, $description, $price);
+            $isOk = $dataBaseService->updateAnnouncement($id, $user_id, $car_id, $destination, $dateDateTime, $description, $price);
         }
 
         return $isOk;
     }
 
     /**
-     * Return all users.
+     * Return all Announcements.
      */
     public function getAnnouncements(): array
     {
@@ -38,8 +38,8 @@ class AnnouncementsService
             foreach ($announcementsDTO as $announcementDTO) {
                 $announcement = new Announcement();
                 $announcement->setId($announcementDTO['id']);
-                $announcement->setUserId($announcementDTO['id_user']);
-                $announcement->setCarId($announcementDTO['id_car']);
+                $announcement->setUserId($announcementDTO['user_id']);
+                $announcement->setCarId($announcementDTO['car_id']);
                 $announcement->setDestination($announcementDTO['destination']);
                 $date = new DateTime($announcementDTO['date']);
                 if ($date !== false) {
@@ -55,7 +55,7 @@ class AnnouncementsService
     }
 
     /**
-     * Delete an user.
+     * Delete an Announcement.
      */
     public function deleteAnnouncement(string $id): bool
     {

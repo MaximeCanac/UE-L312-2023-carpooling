@@ -1,29 +1,35 @@
 <?php
 
-use App\Controllers\UsersController;
+use App\Controllers\AnnouncementsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$controller = new UsersController();
-echo $controller->updateUser();
+$controller = new AnnouncementsController();
+echo $controller->updateAnnouncement();
 ?>
 
-<p>Mise à jour d'un utilisateur</p>
-<form method="post" action="users_update.php" name ="userUpdateForm">
+<p>Mise à jour d'une annonce</p>
+<form method="post" action="announcements_update.php" name ="announcementUpdateForm">
     <label for="id">Id :</label>
     <input type="text" name="id">
     <br />
-    <label for="firstname">Prénom :</label>
-    <input type="text" name="firstname">
+    <label for="user_id">user_id :</label>
+    <input type="text" name="user_id">
     <br />
-    <label for="lastname">Nom :</label>
-    <input type="text" name="lastname">
+    <label for="car_id">car_id :</label>
+    <input type="text" name="car_id">
     <br />
-    <label for="email">Email :</label>
-    <input type="text" name="email">
+    <label for="destination">Destination :</label>
+    <input type="text" name="destination">
     <br />
-    <label for="birthday">Date d'anniversaire au format dd-mm-yyyy :</label>
-    <input type="text" name="birthday">
+    <label for="date">Date du départ au format dd-mm-yyyy :</label>
+    <input type="text" name="date">
     <br />
-    <input type="submit" value="Modifier l'utilisateur">
+    <label for="description">Description :</label>
+    <input type="text" name="description">
+    <br />
+    <label for="price">Prix :</label>
+    <input type="text" name="price">
+    <br />
+    <input type="submit" value="Modifier une annonce">
 </form>
