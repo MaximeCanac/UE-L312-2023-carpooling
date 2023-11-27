@@ -8,7 +8,7 @@ use DateTime;
 class AnnouncementsService
 {
     /**
-     * Create or update an user.
+     * Create or update an Announcement.
      */
     public function setAnnouncement(?string $id, string $user_id, string $car_id, string $destination, string $date, string $description, string $price): bool
     {
@@ -26,7 +26,7 @@ class AnnouncementsService
     }
 
     /**
-     * Return all users.
+     * Return all Announcements.
      */
     public function getAnnouncements(): array
     {
@@ -55,7 +55,7 @@ class AnnouncementsService
     }
 
     /**
-     * Delete an user.
+     * Delete an Announcement.
      */
     public function deleteAnnouncement(string $id): bool
     {

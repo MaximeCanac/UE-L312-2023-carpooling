@@ -81,7 +81,7 @@ class AnnouncementsController
             isset($_POST['date']) &&
             isset($_POST['description']) &&
             isset($_POST['price'])) {
-            // Update the user :
+            // Update the Announcement :
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
                 $_POST['user_id'],
@@ -102,7 +102,7 @@ class AnnouncementsController
     }
 
     /**
-     * Delete an user.
+     * Delete an Announcement.
      */
     public function deleteAnnouncement(): string
     {

@@ -19,16 +19,16 @@ echo $controller->updateAnnouncement();
     <label for="car_id">car_id :</label>
     <input type="text" name="car_id">
     <br />
-    <label for="destination">destination :</label>
+    <label for="destination">Destination :</label>
     <input type="text" name="destination">
     <br />
     <label for="date">Date du départ au format dd-mm-yyyy :</label>
     <input type="text" name="date">
     <br />
-    <label for="description">description :</label>
+    <label for="description">Description :</label>
     <input type="text" name="description">
     <br />
-    <label for="price">price :</label>
+    <label for="price">Prix :</label>
     <input type="text" name="price">
     <br />
     <input type="submit" value="Modifier une annonce">
