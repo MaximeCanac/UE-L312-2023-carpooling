@@ -84,14 +84,4 @@ class Announcement
     {
         $this->price = $price;
     }
-
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    public function setState(string $state): void
-    {
-        $this->state = $state;
-    }
 }

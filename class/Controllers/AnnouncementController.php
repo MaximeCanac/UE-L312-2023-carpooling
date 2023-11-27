@@ -14,8 +14,8 @@ class AnnouncementController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user']) &&
-            isset($_POST['car']) &&
+        if (isset($_POST['id_user']) &&
+            isset($_POST['id_car']) &&
             isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
@@ -24,10 +24,12 @@ class AnnouncementController
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
                 null,
-                $_POST['firstname'],
-                $_POST['lastname'],
-                $_POST['email'],
-                $_POST['birthday']
+                $_POST['id_user'],
+                $_POST['id_car'],
+                $_POST['destination'],
+                $_POST['date'],
+                $_POST['description'],
+                $_POST['price']
             );
             if ($isOk) {
                 $html = 'Annonce créé avec succès.';
@@ -54,10 +56,12 @@ class AnnouncementController
         foreach ($announcements as $announcement) {
             $html .=
                 '#' . $announcement->getId() . ' ' .
-                $announcement->getFirstname() . ' ' .
-                $announcement->getLastname() . ' ' .
-                $announcement->getEmail() . ' ' .
-                $announcement->getBirthday()->format('d-m-Y') . '<br />';
+                $announcement->getIdUser() . ' ' .
+                $announcement->getIdCar() . ' ' .
+                $announcement->getDestination() . ' ' .
+                $announcement->getDate()->format('d-m-Y') . ' ' .
+                $announcement->getDescription() . ' ' .
+                $announcement->getPrice() . '<br />' ;
         }
 
         return $html;
@@ -71,19 +75,21 @@ class AnnouncementController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['id']) &&
-            isset($_POST['firstname']) &&
-            isset($_POST['lastname']) &&
-            isset($_POST['email']) &&
-            isset($_POST['birthday'])) {
+        if (isset($_POST['id_user']) &&
+            isset($_POST['id_car']) &&
+            isset($_POST['destination']) &&
+            isset($_POST['date']) &&
+            isset($_POST['description']) &&
+            isset($_POST['price'])) {
             // Update the user :
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
-                $_POST['id'],
-                $_POST['firstname'],
-                $_POST['lastname'],
-                $_POST['email'],
-                $_POST['birthday']
+                $_POST['id_user'],
+                $_POST['id_car'],
+                $_POST['destination'],
+                $_POST['date'],
+                $_POST['description'],
+                $_POST['price']
             );
             if ($isOk) {
                 $html = 'Annonce mis à jour avec succès.';

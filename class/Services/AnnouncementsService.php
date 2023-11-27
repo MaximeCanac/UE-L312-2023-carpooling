@@ -10,16 +10,16 @@ class AnnouncementsService
     /**
      * Create or update an user.
      */
-    public function setAnnouncement(?string $id, string $firstname, string $lastname, string $email, string $birthday): bool
+    public function setAnnouncement(?string $id, string $id_user, string $id_car, string $destination, string $date, string $description, string $price): bool
     {
         $isOk = false;
 
         $dataBaseService = new DataBaseService();
-        $birthdayDateTime = new DateTime($birthday);
+        $dateDateTime = new DateTime($date);
         if (empty($id)) {
-            $isOk = $dataBaseService->createAnnouncement($firstname, $lastname, $email, $birthdayDateTime);
+            $isOk = $dataBaseService->createAnnouncement($id_user, $id_car, $destination, $dateDateTime, $description, $price);
         } else {
-            $isOk = $dataBaseService->updateAnnouncement($id, $firstname, $lastname, $email, $birthdayDateTime);
+            $isOk = $dataBaseService->updateAnnouncement($id, $id_user, $id_car, $destination, $dateDateTime, $description, $price);
         }
 
         return $isOk;
@@ -38,13 +38,15 @@ class AnnouncementsService
             foreach ($announcementsDTO as $announcementDTO) {
                 $announcement = new Announcement();
                 $announcement->setId($announcementDTO['id']);
-                $announcement->setFirstname($announcementDTO['firstname']);
-                $announcement->setLastname($announcementDTO['lastname']);
-                $announcement->setEmail($announcementDTO['email']);
-                $date = new DateTime($announcementDTO['birthday']);
+                $announcement->setUserId($announcementDTO['id_user']);
+                $announcement->setCarId($announcementDTO['id_car']);
+                $announcement->setDestination($announcementDTO['destination']);
+                $date = new DateTime($announcementDTO['date']);
                 if ($date !== false) {
-                    $announcement->setbirthday($date);
+                    $announcement->setdate($date);
                 }
+                $announcement->setDescription($announcementDTO['description']);
+                $announcement->setPrice($announcementDTO['price']);
                 $announcements[] = $announcement;
             }
         }
