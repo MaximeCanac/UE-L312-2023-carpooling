@@ -1,35 +1,29 @@
 <?php
 
-use App\Controllers\AnnouncementsController;
+use App\Controllers\CarsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$controller = new AnnouncementsController();
-echo $controller->updateAnnouncement();
+$controller = new CarsController();
+echo $controller->updateCar();
 ?>
 
-<p>Mise à jour d'une annonce</p>
-<form method="post" action="announcements_update.php" name ="announcementUpdateForm">
+<p>Mise à jour d'une voiture</p>
+<form method="post" action="cars_update.php" name ="carUpdateForm">
     <label for="id">Id :</label>
     <input type="text" name="id">
     <br />
-    <label for="user_id">user_id :</label>
-    <input type="text" name="user_id">
+    <label for="brand">brand :</label>
+    <input type="text" name="brand">
     <br />
-    <label for="car_id">car_id :</label>
-    <input type="text" name="car_id">
+    <label for="model">model :</label>
+    <input type="text" name="model">
     <br />
-    <label for="destination">destination :</label>
-    <input type="text" name="destination">
+    <label for="year">Date de la voiture au format dd-mm-yyyy :</label>
+    <input type="text" name="year">
     <br />
-    <label for="date">Date du départ au format dd-mm-yyyy :</label>
-    <input type="text" name="date">
+    <label for="place">place :</label>
+    <input type="text" name="place">
     <br />
-    <label for="description">description :</label>
-    <input type="text" name="description">
-    <br />
-    <label for="price">price :</label>
-    <input type="text" name="price">
-    <br />
-    <input type="submit" value="Modifier une annonce">
+    <input type="submit" value="Modifier une voiture">
 </form>

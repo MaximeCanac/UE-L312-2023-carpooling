@@ -7,13 +7,10 @@ use DateTime;
 class Car
 {
     private $id;
-    private $userId;
-    private $carId;
-    private $destination;
-    private $date;
-    private $description;
-    private $price;
-    private $state;
+    private $brand;
+    private $model;
+    private $year;
+    private $place;
 
     public function getId(): int
     {
@@ -25,63 +22,43 @@ class Car
         $this->id = $id;
     }
 
-    public function getUserId(): int
+    public function getBrand(): string
     {
-        return $this->userId;
+        return $this->brand;
     }
 
-    public function setUserId(int $userId): void
+    public function setBrand(string $brand): void
     {
-        $this->userId = $userId;
+        $this->brand = $brand;
     }
 
-    public function getCarId(): int
+    public function getModel(): string
     {
-        return $this->carId;
+        return $this->model;
     }
 
-    public function setCarId(int $carId): void
+    public function setModel(string $model): void
     {
-        $this->carId = $carId;
+        $this->model = $model;
     }
 
-    public function getDestination(): string
+    public function getYear(): DateTime
     {
-        return $this->destination;
+        return $this->year;
     }
 
-    public function setDestination(string $destination): void
+    public function setYear(DateTime $year): void
     {
-        $this->destination = $destination;
+        $this->year = $year;
     }
 
-    public function getDate(): DateTime
+    public function getPlace(): int
     {
-        return $this->date;
+        return $this->place;
     }
 
-    public function setDate(DateTime $date): void
+    public function setPlace(int $place): void
     {
-        $this->date = $date;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
-    }
-
-    public function getPrice(): ?float
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?float $price): void
-    {
-        $this->price = $price;
+        $this->place= $place;
     }
 }

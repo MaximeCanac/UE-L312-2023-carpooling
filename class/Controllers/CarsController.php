@@ -2,39 +2,35 @@
 
 namespace App\Controllers;
 
-use App\Services\AnnouncementsService;
+use App\Services\CarsService;
 
 class CarsController
 {
     /**
      * Return the html for the create action.
      */
-    public function createAnnouncement(): string
+    public function createCar(): string
     {
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user_id']) &&
-            isset($_POST['car_id']) &&
-            isset($_POST['destination']) &&
-            isset($_POST['date']) &&
-            isset($_POST['description']) &&
-            isset($_POST['price'])) {
-            // Create the Announcement :
-            $announcementsService = new AnnouncementsService();
-            $isOk = $announcementsService->setAnnouncement(
+        if (isset($_POST['brand']) &&
+            isset($_POST['model']) &&
+            isset($_POST['year']) &&
+            isset($_POST['place'])) {
+            // Create the Car :
+            $carsService = new CarsService();
+            $isOk = $carsService->setCar(
                 null,
-                $_POST['user_id'],
-                $_POST['car_id'],
-                $_POST['destination'],
-                $_POST['date'],
-                $_POST['description'],
-                $_POST['price']
+                $_POST['brand'],
+                $_POST['model'],
+                $_POST['year'],
+                $_POST['place']
             );
             if ($isOk) {
-                $html = 'Annonce créé avec succès.';
+                $html = 'Voiture créé avec succès.';
             } else {
-                $html = 'Erreur lors de la création de l\'annonce.';
+                $html = 'Erreur lors de la création de la voiture.';
             }
         }
 
@@ -44,57 +40,53 @@ class CarsController
     /**
      * Return the html for the read action.
      */
-    public function getAnnouncements(): string
+    public function getCars(): string
     {
         $html = '';
 
         // Get all announcements :
-        $announcementsService = new AnnouncementsService();
-        $announcements = $announcementsService->getAnnouncements();
+        $carsService = new CarsService();
+        $cars = $carsService->getCars();
 
         // Get html :
-        foreach ($announcements as $announcement) {
+        foreach ($cars as $car) {
             $html .=
-                '#' . $announcement->getId() . ' ' .
-                $announcement->getUserId() . ' ' .
-                $announcement->getCarId() . ' ' .
-                $announcement->getDestination() . ' ' .
-                $announcement->getDate()->format('d-m-Y') . ' ' .
-                $announcement->getDescription() . ' ' .
-                $announcement->getPrice() . '<br />' ;
+                '#' . $car->getId() . ' ' .
+                $car->getBrand() . ' ' .
+                $car->getModel() . ' ' .
+                $car->getYear()->format('d-m-Y') . ' ' .
+                $car->getPlace() . '<br />' ;
         }
 
         return $html;
     }
 
     /**
-     * Update the announcement.
+     * Update the car.
      */
-    public function updateAnnouncement(): string
+    public function updateCar(): string
     {
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user_id']) &&
-            isset($_POST['car_id']) &&
-            isset($_POST['destination']) &&
-            isset($_POST['date']) &&
-            isset($_POST['description']) &&
-            isset($_POST['price'])) {
-            // Update the user :
-            $announcementsService = new AnnouncementsService();
-            $isOk = $announcementsService->setAnnouncement(
-                $_POST['user_id'],
-                $_POST['car_id'],
-                $_POST['destination'],
-                $_POST['date'],
-                $_POST['description'],
-                $_POST['price']
+        if (isset($_POST['id']) &&
+            isset($_POST['brand']) &&
+            isset($_POST['model']) &&
+            isset($_POST['year']) &&
+            isset($_POST['place'])) {
+            // Update the car :
+            $carsService = new CarsService();
+            $isOk = $carsService->setCar(
+                $_POST['id'],
+                $_POST['brand'],
+                $_POST['model'],
+                $_POST['year'],
+                $_POST['place']
             );
             if ($isOk) {
-                $html = 'Annonce mis à jour avec succès.';
+                $html = 'Voiture mis à jour avec succès.';
             } else {
-                $html = 'Erreur lors de la mise à jour de l\'annonce.';
+                $html = 'Erreur lors de la mise à jour de la voiture.';
             }
         }
 
@@ -102,21 +94,21 @@ class CarsController
     }
 
     /**
-     * Delete an user.
+     * Delete an car.
      */
-    public function deleteAnnouncement(): string
+    public function deleteCar(): string
     {
         $html = '';
 
         // If the form have been submitted :
         if (isset($_POST['id'])) {
-            // Delete the Announcement :
-            $announcementsService = new AnnouncementsService();
-            $isOk = $announcementsService->deleteAnnouncement($_POST['id']);
+            // Delete the Car :
+            $carsService = new CarsService();
+            $isOk = $carsService->deleteCar($_POST['id']);
             if ($isOk) {
-                $html = 'Annonce supprimé avec succès.';
+                $html = 'Voiture supprimé avec succès.';
             } else {
-                $html = 'Erreur lors de la supression de l\'annonce.';
+                $html = 'Erreur lors de la supression de la voiture.';
             }
         }
 

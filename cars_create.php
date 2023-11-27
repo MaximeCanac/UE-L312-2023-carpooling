@@ -1,32 +1,26 @@
 <?php
 
-use App\Controllers\AnnouncementsController;
+use App\Controllers\CarsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$controller = new AnnouncementsController();
-echo $controller->createAnnouncement();
+$controller = new CarsController();
+echo $controller->createCar();
 ?>
 
-<p>Création d'une annonce</p>
-<form method="post" action="announcements_create.php" name ="announcementCreateForm">
-    <label for="user_id">user_id :</label>
-    <input type="text" name="user_id">
+<p>Ajout d'une voiture</p>
+<form method="post" action="cars_create.php" name ="carCreateForm">
+    <label for="brand">brand :</label>
+    <input type="text" name="brand">
     <br />
-    <label for="car_id">car_id :</label>
-    <input type="text" name="car_id">
+    <label for="model">model :</label>
+    <input type="text" name="model">
     <br />
-    <label for="destination">destination :</label>
-    <input type="text" name="destination">
+    <label for="year">Date de la voiture au format dd-mm-yyyy :</label>
+    <input type="text" name="year">
     <br />
-    <label for="date">Date du départ au format dd-mm-yyyy :</label>
-    <input type="text" name="date">
+    <label for="place">place :</label>
+    <input type="text" name="place">
     <br />
-    <label for="description">description :</label>
-    <input type="text" name="description">
-    <br />
-    <label for="price">price :</label>
-    <input type="float" name="price">
-    <br />
-    <input type="submit" value="Créer une annonce">
+    <input type="submit" value="Ajouter une voiture">
 </form>

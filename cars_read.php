@@ -1,8 +1,8 @@
 <?php
 
-use App\Controllers\AnnouncementsController;
+use App\Controllers\CarsController;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$controller = new AnnouncementsController();
-echo $controller->getAnnouncements();
+$controller = new CarsController();
+echo $controller->getCars();

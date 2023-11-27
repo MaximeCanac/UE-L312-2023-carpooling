@@ -2,67 +2,65 @@
 
 namespace App\Services;
 
-use App\Entities\Announcement;
+use App\Entities\Car;
 use DateTime;
 
 class CarsService
 {
     /**
-     * Create or update an user.
+     * Create or update an car.
      */
-    public function setAnnouncement(?string $id, string $user_id, string $car_id, string $destination, string $date, string $description, string $price): bool
+    public function setCar(?string $id, string $brand, string $model, string $year, string $place): bool
     {
         $isOk = false;
 
         $dataBaseService = new DataBaseService();
-        $dateDateTime = new DateTime($date);
+        $yearDateTime = new DateTime($year);
         if (empty($id)) {
-            $isOk = $dataBaseService->createAnnouncement($user_id, $car_id, $destination, $dateDateTime, $description, $price);
+            $isOk = $dataBaseService->createCar($brand, $model, $yearDateTime, $place);
         } else {
-            $isOk = $dataBaseService->updateAnnouncement($id, $user_id, $car_id, $destination, $dateDateTime, $description, $price);
+            $isOk = $dataBaseService->updateCar($id,$brand, $model, $yearDateTime, $place);
         }
 
         return $isOk;
     }
 
     /**
-     * Return all users.
+     * Return all cars.
      */
-    public function getAnnouncements(): array
+    public function getCars(): array
     {
-        $announcements = [];
+        $Cars = [];
 
         $dataBaseService = new DataBaseService();
-        $announcementsDTO = $dataBaseService->getAnnouncements();
-        if (!empty($announcementsDTO)) {
-            foreach ($announcementsDTO as $announcementDTO) {
-                $announcement = new Announcement();
-                $announcement->setId($announcementDTO['id']);
-                $announcement->setUserId($announcementDTO['user_id']);
-                $announcement->setCarId($announcementDTO['car_id']);
-                $announcement->setDestination($announcementDTO['destination']);
-                $date = new DateTime($announcementDTO['date']);
-                if ($date !== false) {
-                    $announcement->setdate($date);
+        $CarsDTO = $dataBaseService->getCars();
+        if (!empty($CarsDTO)) {
+            foreach ($CarsDTO as $CarDTO) {
+                $Car = new Car();
+                $Car->setId($CarDTO['id']);
+                $Car->setBrand($CarDTO['brand']);
+                $Car->setModel($CarDTO['model']);
+                $year = new DateTime($CarDTO['year']);
+                if ($year !== false) {
+                    $Car->setYear($year);
                 }
-                $announcement->setDescription($announcementDTO['description']);
-                $announcement->setPrice($announcementDTO['price']);
-                $announcements[] = $announcement;
+                $Car->setPlace($CarDTO['place']);
+                $Cars[] = $Car;
             }
         }
 
-        return $announcements;
+        return $Cars;
     }
 
     /**
-     * Delete an user.
+     * Delete an car.
      */
-    public function deleteAnnouncement(string $id): bool
+    public function deleteCar(string $id): bool
     {
         $isOk = false;
 
         $dataBaseService = new DataBaseService();
-        $isOk = $dataBaseService->deleteAnnouncement($id);
+        $isOk = $dataBaseService->deleteCar($id);
 
         return $isOk;
     }
