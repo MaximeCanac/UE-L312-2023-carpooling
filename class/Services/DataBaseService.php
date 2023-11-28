@@ -105,6 +105,9 @@ class DataBaseService
         return $isOk;
     }
 
+    /**
+     * Create an Announcement.
+     */
     public function createAnnouncement(int $userId, int $carId, string $destination, DateTime $date, ?string $description, ?float $price): bool
     {
         $isOk = false;
@@ -125,6 +128,9 @@ class DataBaseService
         return $isOk;
     }
 
+    /**
+     * Return all Announcement.
+     */
     public function getAnnouncements(): array
     {
         $announcements = [];
@@ -140,6 +146,9 @@ class DataBaseService
         return $announcements;
     }
 
+    /**
+     * Update an Announcement.
+     */
     public function updateAnnouncement(int $id, int $userId, int $carId, string $destination, DateTime $date, ?string $description, ?float $price): bool
     {
         $isOk = false;
@@ -161,6 +170,9 @@ class DataBaseService
         return $isOk;
     }
 
+    /**
+     * Delete an Announcement.
+     */
     public function deleteAnnouncement(int $id): bool
     {
         $isOk = false;
@@ -170,6 +182,81 @@ class DataBaseService
         ];
 
         $sql = 'DELETE FROM announcements WHERE id = :id';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Create an car.
+     */
+    public function createCar(string $brand, string $model, DateTime $year, int $place): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'brand' => $brand,
+            'model' => $model,
+            'year' => $year->format(DateTime::RFC3339),
+            'place' => $place,
+        ];
+        $sql = 'INSERT INTO cars (brand, model, year, place) VALUES (:brand, :model, :year, :place)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Return all cars.
+     */
+    public function getCars(): array
+    {
+        $cars = [];
+
+        $sql = 'SELECT * FROM cars';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $cars = $results;
+        }
+
+        return $cars;
+    }
+
+    /**
+     * Update an car.
+     */
+    public function updateCar(int $id, string $brand, string $model, DateTime $year, int $place): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+            'brand' => $brand,
+            'model' => $model,
+            'year' => $year->format(DateTime::RFC3339),
+            'place' => $place,
+        ];
+        $sql = 'UPDATE cars SET brand = :brand, model = :model, year = :year, place = :place WHERE id = :id;';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Delete car.
+     */
+    public function deleteCar(int $id): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'id' => $id,
+        ];
+        $sql = 'DELETE FROM cars WHERE id = :id;';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
