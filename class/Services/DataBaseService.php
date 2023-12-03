@@ -146,6 +146,30 @@ class DataBaseService
         return $announcements;
     }
 
+
+    /**
+     * Return the searched Announcement.
+     */
+    public function getAnnouncement(int $id): array
+    {
+        $announcements = [];
+
+        $req = 'SELECT * FROM announcements WHERE id=?';
+        $query = $this->connection->prepare($req);
+        $query->execute(array($id));
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($results)) {
+            $announcements = $results;
+        }
+
+        return $announcements;
+    }
+
+
+
+
+
     /**
      * Update an Announcement.
      */
@@ -287,6 +311,27 @@ class DataBaseService
 
         return $returnBool;
     }
+
+
+
+    /**
+     * Return all Reservations.
+     */
+    public function getReservations(): array
+    {
+        $reservations = [];
+
+        $sql = 'SELECT * FROM reservations';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($results)) {
+            $reservations = $results;
+        }
+
+        return $reservations;
+    }
+
 
 
 

@@ -31,6 +31,30 @@ class ReservationsController
 
 
 
+
+    /**
+     * Get all reservations
+     * 
+     * @return string
+     */
+    public function getReservations(): string {
+        $returnString = "";
+
+        // Get all reservations :
+        $reservationsService = new ReservationsService();
+        $reservations = $reservationsService->getReservations();
+
+        foreach ($reservations as $reservation) {
+            $returnString .= ' --- '.var_dump($reservation);
+        }
+
+        
+        return $returnString;
+    }
+
+
+
+
     /**
      * Updates a reservation
      * 
