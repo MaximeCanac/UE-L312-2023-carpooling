@@ -10,11 +10,12 @@ class ReservationsService
     /**
      * Create or update a Reservation
      * @param int $id_user : User identifier
+     * @param int $id_announcement : Announcement identifier
      * @param string $date
      * @param int $id_reservation : Reservation identifier (in case of update)
      * @return bool
      */
-    public function setReservation(int $id_user, string $date, int $id_reservation=null): bool {
+    public function setReservation(int $id_user, int $id_announcement, string $date, int $id_reservation=null): bool {
         $returnBool = false;
 
         $dataBaseService = new DataBaseService();
@@ -23,7 +24,7 @@ class ReservationsService
         if (empty($id_reservation)) {
             $returnBool = $dataBaseService->createReservation($id_reservation, $id_user, $dateDateTime);
         } else {
-            $returnBool = $dataBaseService->updateReservation($id_reservation, $id_reservation, $id_user, $dateDateTime);
+            $returnBool = $dataBaseService->updateReservation($id_reservation, $id_announcement, $id_user, $dateDateTime);
         }
 
         return $returnBool;
@@ -55,7 +56,7 @@ class ReservationsService
                 
                 // Gets the announcement for the current reservation
                 $announcentService = new AnnouncementsService();
-                $announcement = $announcentService->getAnnouncement($reservationDTO['id_announcements']);
+                $announcement = $announcentService->getAnnouncement($reservationDTO['id_announcement']);
 
                 $reservation->setAnnouncement($announcement);
                 $reservations[] = $reservation;
@@ -81,6 +82,9 @@ class ReservationsService
 
         return $returnBool;
     }
+
+
+    
 }
 
 ?>

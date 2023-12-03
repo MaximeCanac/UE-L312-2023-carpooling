@@ -315,6 +315,34 @@ class DataBaseService
 
 
     /**
+     * Update a Reservation
+     * 
+     * @param int $id_reservation : Reservation identifier
+     * @param int $id_announcement : Announcement identifier
+     * @param int $id_user : User identifier
+     * @param DateTime $date : Current date
+     * @return bool
+     */
+    public function updateReservation($id_reservation, $id_announcement, $id_user, DateTime $date): bool {
+        $returnBool = false;
+
+        $data = array(
+            'id_reservation' => $id_reservation,
+            'id_announcement' => $id_announcement,
+            'id_user' => $id_user,
+            'reservation_date' => $date->format(DateTime::W3C)
+        );
+
+        $sql = 'UPDATE reservations SET id_reservation = :id_reservation, id_announcement = :id_announcement, id_user = :id_user, date = :reservation_date;';
+        $query = $this->connection->prepare($sql);
+        $returnBool = $query->execute($data);
+
+        return $returnBool;
+    }
+
+
+
+    /**
      * Return all Reservations.
      */
     public function getReservations(): array

@@ -31,7 +31,6 @@ class ReservationsController
 
 
 
-
     /**
      * Get all reservations
      * 
