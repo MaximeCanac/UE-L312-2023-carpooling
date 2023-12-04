@@ -36,6 +36,11 @@ class UsersController
                     $isOk = $usersService->setUserCar($userId, $carId);
                 }
             }
+            if (!empty($_POST['announcements'])) {
+                foreach ($_POST['announcements'] as $announcementId) {
+                    $isOk = $usersService->setUserAnnouncement($userId, $announcementId);
+                }
+            }
             if ($userId && $isOk) {
                 $html = 'Utilisateur créé avec succès.';
             } else {
@@ -59,6 +64,12 @@ class UsersController
 
         // Get html :
         foreach ($users as $user) {
+            $announcementsHtml = '';
+            if (!empty($user->getAnnouncements())) {
+                foreach ($user->getAnnouncements() as $announcement) {
+                    $announcementsHtml .= $announcement->getDestination() . ' ' . $announcement->getDate() . ' ' . $announcement->getDescription() . ' '. $announcement->getPrice() . ' ';
+                }
+            }
             $carsHtml = '';
             if (!empty($user->getCars())) {
                 foreach ($user->getCars() as $car) {
@@ -71,6 +82,7 @@ class UsersController
                 $user->getLastname() . ' ' .
                 $user->getEmail() . ' ' .
                 $user->getBirthday()->format('d-m-Y') . ' ' .
+                $announcementsHtml . '<br />'.
                 $carsHtml . '<br />';
         }
 

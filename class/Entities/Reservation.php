@@ -61,7 +61,7 @@ class Reservation
         $this->announcementObject = $announcement;
     }
 
-    
+
 }
 
 ?>

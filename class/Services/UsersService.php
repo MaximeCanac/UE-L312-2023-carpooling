@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entities\Car;
 use App\Entities\User;
+use App\Entities\Announcement;
 use DateTime;
 
 class UsersService
@@ -52,6 +53,9 @@ class UsersService
                 // Get cars of this user :
                 $cars = $this->getUserCars($userDTO['id']);
                 $user->setCars($cars);
+                // Get announcements of this user :
+                $announcements = $this->getUserAnnouncements($userDTO['id']);
+                $user->setAnnouncements($announcements);
 
                 $users[] = $user;
             }
@@ -109,5 +113,43 @@ class UsersService
         }
 
         return $userCars;
+    }
+    /**
+     * Create relation bewteen an user and his car.
+     */
+    public function setUserAnnouncement(string $userId, string $announcementId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setUserAnnouncement($userId, $announcementId);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given user id.
+     */
+    public function getUserAnnouncements(string $userId): array
+    {
+        $userAnnouncements = [];
+
+        $dataBaseService = new DataBaseService();
+
+        // Get relation users and cars :
+        $userAnnouncementsDTO = $dataBaseService->getUserAnnouncements($userId);
+        if (!empty($userAnnouncementsDTO)) {
+            foreach ($userAnnouncementsDTO as $userAnnouncementDTO) {
+                $announcement = new Announcement();
+                $announcement->setId($userAnnouncementDTO['id']);
+                $announcement->setDestination($userAnnouncementDTO['destination']);
+                $announcement->setDate($userAnnouncementDTO['date']);
+                $announcement->setDescription($userAnnouncementDTO['description']);
+                $announcement->setPrice($userAnnouncementDTO['price']);
+                $userAnnouncements[] = $announcement;
+            }
+        }
+
+        return $userAnnouncements;
     }
 }

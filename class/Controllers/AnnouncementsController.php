@@ -14,27 +14,30 @@ class AnnouncementsController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user_id']) &&
-            isset($_POST['car_id']) &&
-            isset($_POST['destination']) &&
+        if (isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
             isset($_POST['price'])) {
             // Create the Announcement :
             $announcementsService = new AnnouncementsService();
-            $isOk = $announcementsService->setAnnouncement(
+            $announcementId = $announcementsService->setAnnouncement(
                 null,
-                $_POST['user_id'],
-                $_POST['car_id'],
                 $_POST['destination'],
                 $_POST['date'],
                 $_POST['description'],
                 $_POST['price']
             );
-            if ($isOk) {
+            // Create the announcement reservation relations :
+            $isOk = true;
+            if (!empty($_POST['reservations'])) {
+                foreach ($_POST['reservations'] as $reservationId) {
+                    $isOk = $announcementsService->setAnnouncementReservation($announcementId, $reservationId);
+                }
+            }
+            if ($announcementId && $isOk) {
                 $html = 'Annonce créé avec succès.';
             } else {
-                $html = 'Erreur lors de la création de l\'annonce.';
+                $html = 'Erreur lors de la création de l\'Annonce.';
             }
         }
 
@@ -54,14 +57,19 @@ class AnnouncementsController
 
         // Get html :
         foreach ($announcements as $announcement) {
+            $announcementsHtml = '';
+            if (!empty($announcement->getReservations())) {
+                foreach ($announcement->getReservations() as $reservation) {
+                    $announcementsHtml .= $reservation->getDate() . ' ' . $reservation->getAnnouncement() . ' ';
+                }
+            }
             $html .=
                 '#' . $announcement->getId() . ' ' .
-                $announcement->getUserId() . ' ' .
-                $announcement->getCarId() . ' ' .
                 $announcement->getDestination() . ' ' .
                 $announcement->getDate()->format('d-m-Y') . ' ' .
                 $announcement->getDescription() . ' ' .
-                $announcement->getPrice() . '<br />' ;
+                $announcement->getPrice() . ' '.
+                $announcementsHtml. '<br />';
         }
 
         return $html;
@@ -75,8 +83,7 @@ class AnnouncementsController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user_id']) &&
-            isset($_POST['car_id']) &&
+        if (isset($_POST['id']) &&
             isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
@@ -84,8 +91,7 @@ class AnnouncementsController
             // Update the Announcement :
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
-                $_POST['user_id'],
-                $_POST['car_id'],
+                $_POST['id'],
                 $_POST['destination'],
                 $_POST['date'],
                 $_POST['description'],

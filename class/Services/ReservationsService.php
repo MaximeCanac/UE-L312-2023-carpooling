@@ -51,9 +51,9 @@ class ReservationsService
                 // if ($date !== false) {
                 //     $reservation->setDate($date);
                 // }
-                
+
                 $reservation->setAnnouncementId($reservationDTO['id_announcement']);
-                
+
                 // Gets the announcement for the current reservation
                 $announcentService = new AnnouncementsService();
                 $announcement = $announcentService->getAnnouncement($reservationDTO['id_announcement']);
@@ -84,7 +84,7 @@ class ReservationsService
     }
 
 
-    
+
 }
 
 ?>
