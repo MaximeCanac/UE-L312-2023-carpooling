@@ -8,7 +8,7 @@ use DateTime;
 class AnnouncementsService
 {
     /**
-     * Create or update an user.
+     * Create or update an Announcement.
      */
     public function setAnnouncement(?string $id, string $user_id, string $car_id, string $destination, string $date, string $description, string $price): bool
     {
@@ -26,7 +26,7 @@ class AnnouncementsService
     }
 
     /**
-     * Return all users.
+     * Return all Announcements.
      */
     public function getAnnouncements(): array
     {
@@ -54,8 +54,42 @@ class AnnouncementsService
         return $announcements;
     }
 
+
     /**
-     * Delete an user.
+     * Return the searched announcement
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function getAnnouncement(int $id): Announcement
+    {
+        $announcements = [];
+
+        $dataBaseService = new DataBaseService();
+        $announcementsDTO = $dataBaseService->getAnnouncement($id);
+        if (!empty($announcementsDTO)) {
+            foreach ($announcementsDTO as $announcementDTO) {
+                $announcement = new Announcement();
+                $announcement->setId($announcementDTO['id']);
+                $announcement->setUserId($announcementDTO['user_id']);
+                $announcement->setCarId($announcementDTO['car_id']);
+                $announcement->setDestination($announcementDTO['destination']);
+                $date = new DateTime($announcementDTO['date']);
+                if ($date !== false) {
+                    $announcement->setdate($date);
+                }
+                $announcement->setDescription($announcementDTO['description']);
+                $announcement->setPrice($announcementDTO['price']);
+                return $announcement;
+            }
+        }
+
+        $nullAnnouncement = new Announcement();
+        return $nullAnnouncement;
+    }
+
+    /**
+     * Delete an Announcement.
      */
     public function deleteAnnouncement(string $id): bool
     {
