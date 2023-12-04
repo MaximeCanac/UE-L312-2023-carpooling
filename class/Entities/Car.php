@@ -2,24 +2,24 @@
 
 namespace App\Entities;
 
-use DateTime;
-
 class Car
 {
     private $id;
     private $brand;
     private $model;
-    private $year;
+    private $color;
     private $place;
 
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
 
     public function getBrand(): string
@@ -27,9 +27,11 @@ class Car
         return $this->brand;
     }
 
-    public function setBrand(string $brand): void
+    public function setBrand(string $brand): self
     {
         $this->brand = $brand;
+
+        return $this;
     }
 
     public function getModel(): string
@@ -37,28 +39,34 @@ class Car
         return $this->model;
     }
 
-    public function setModel(string $model): void
+    public function setModel(string $model): self
     {
         $this->model = $model;
+
+        return $this;
     }
 
-    public function getYear(): DateTime
+    public function getColor(): string
     {
-        return $this->year;
+        return $this->color;
     }
 
-    public function setYear(DateTime $year): void
+    public function setColor(string $color): self
     {
-        $this->year = $year;
+        $this->color = $color;
+
+        return $this;
     }
 
-    public function getPlace(): int
+    public function getplace(): int
     {
         return $this->place;
     }
 
-    public function setPlace(int $place): void
+    public function setplace(int $place): self
     {
-        $this->place= $place;
+        $this->place = $place;
+
+        return $this;
     }
 }

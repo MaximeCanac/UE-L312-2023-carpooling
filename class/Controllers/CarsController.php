@@ -16,7 +16,7 @@ class CarsController
         // If the form have been submitted :
         if (isset($_POST['brand']) &&
             isset($_POST['model']) &&
-            isset($_POST['year']) &&
+            isset($_POST['color']) &&
             isset($_POST['place'])) {
             // Create the Car :
             $carsService = new CarsService();
@@ -24,7 +24,7 @@ class CarsController
                 null,
                 $_POST['brand'],
                 $_POST['model'],
-                $_POST['year'],
+                $_POST['color'],
                 $_POST['place']
             );
             if ($isOk) {
@@ -54,7 +54,7 @@ class CarsController
                 '#' . $car->getId() . ' ' .
                 $car->getBrand() . ' ' .
                 $car->getModel() . ' ' .
-                $car->getYear()->format('d-m-Y') . ' ' .
+                $car->getColor() . ' ' .
                 $car->getPlace() . '<br />' ;
         }
 
@@ -72,7 +72,7 @@ class CarsController
         if (isset($_POST['id']) &&
             isset($_POST['brand']) &&
             isset($_POST['model']) &&
-            isset($_POST['year']) &&
+            isset($_POST['color']) &&
             isset($_POST['place'])) {
             // Update the car :
             $carsService = new CarsService();
@@ -80,7 +80,7 @@ class CarsController
                 $_POST['id'],
                 $_POST['brand'],
                 $_POST['model'],
-                $_POST['year'],
+                $_POST['color'],
                 $_POST['place']
             );
             if ($isOk) {
