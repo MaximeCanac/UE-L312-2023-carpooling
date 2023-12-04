@@ -54,6 +54,40 @@ class AnnouncementsService
         return $announcements;
     }
 
+
+    /**
+     * Return the searched announcement
+     * 
+     * @param int $id
+     * @return array
+     */
+    public function getAnnouncement(int $id): Announcement
+    {
+        $announcements = [];
+
+        $dataBaseService = new DataBaseService();
+        $announcementsDTO = $dataBaseService->getAnnouncement($id);
+        if (!empty($announcementsDTO)) {
+            foreach ($announcementsDTO as $announcementDTO) {
+                $announcement = new Announcement();
+                $announcement->setId($announcementDTO['id']);
+                $announcement->setUserId($announcementDTO['user_id']);
+                $announcement->setCarId($announcementDTO['car_id']);
+                $announcement->setDestination($announcementDTO['destination']);
+                $date = new DateTime($announcementDTO['date']);
+                if ($date !== false) {
+                    $announcement->setdate($date);
+                }
+                $announcement->setDescription($announcementDTO['description']);
+                $announcement->setPrice($announcementDTO['price']);
+                return $announcement;
+            }
+        }
+
+        $nullAnnouncement = new Announcement();
+        return $nullAnnouncement;
+    }
+
     /**
      * Delete an Announcement.
      */
