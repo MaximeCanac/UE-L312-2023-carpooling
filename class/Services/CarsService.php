@@ -3,23 +3,21 @@
 namespace App\Services;
 
 use App\Entities\Car;
-use DateTime;
 
 class CarsService
 {
     /**
      * Create or update an car.
      */
-    public function setCar(?string $id, string $brand, string $model, string $year, string $place): bool
+    public function setCar(?string $id, string $brand, string $model, string $color, string $place): bool
     {
         $isOk = false;
 
         $dataBaseService = new DataBaseService();
-        $yearDateTime = new DateTime($year);
         if (empty($id)) {
-            $isOk = $dataBaseService->createCar($brand, $model, $yearDateTime, $place);
+            $isOk = $dataBaseService->createCar($brand, $model, $color, $place);
         } else {
-            $isOk = $dataBaseService->updateCar($id,$brand, $model, $yearDateTime, $place);
+            $isOk = $dataBaseService->updateCar($id,$brand, $model, $color, $place);
         }
 
         return $isOk;
@@ -30,26 +28,23 @@ class CarsService
      */
     public function getCars(): array
     {
-        $Cars = [];
+        $cars = [];
 
         $dataBaseService = new DataBaseService();
-        $CarsDTO = $dataBaseService->getCars();
-        if (!empty($CarsDTO)) {
-            foreach ($CarsDTO as $CarDTO) {
-                $Car = new Car();
-                $Car->setId($CarDTO['id']);
-                $Car->setBrand($CarDTO['brand']);
-                $Car->setModel($CarDTO['model']);
-                $year = new DateTime($CarDTO['year']);
-                if ($year !== false) {
-                    $Car->setYear($year);
-                }
-                $Car->setPlace($CarDTO['place']);
-                $Cars[] = $Car;
+        $carsDTO = $dataBaseService->getCars();
+        if (!empty($carsDTO)) {
+            foreach ($carsDTO as $carDTO) {
+                $car = new Car();
+                $car->setId($carDTO['id']);
+                $car->setBrand($carDTO['brand']);
+                $car->setModel($carDTO['model']);
+                $car->setColor($carDTO['color']);
+                $car->setPlace($carDTO['place']);
+                $cars[] = $car;
             }
         }
 
-        return $Cars;
+        return $cars;
     }
 
     /**

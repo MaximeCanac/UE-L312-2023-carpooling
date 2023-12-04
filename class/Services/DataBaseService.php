@@ -10,9 +10,9 @@ class DataBaseService
 {
     const HOST = '127.0.0.1';
     const PORT = '3306';
-    const DATABASE_NAME = 'crpooling';
+    const DATABASE_NAME = 'carpooling';
     const MYSQL_USER = 'root';
-    const MYSQL_PASSWORD = '';
+    const MYSQL_PASSWORD = 'password';
 
     private $connection;
 
@@ -33,9 +33,9 @@ class DataBaseService
     /**
      * Create an user.
      */
-    public function createUser(string $firstname, string $lastname, string $email, DateTime $birthday): bool
+    public function createUser(string $firstname, string $lastname, string $email, DateTime $birthday): string
     {
-        $isOk = false;
+        $userId = '';
 
         $data = [
             'firstname' => $firstname,
@@ -46,8 +46,11 @@ class DataBaseService
         $sql = 'INSERT INTO users (firstname, lastname, email, birthday) VALUES (:firstname, :lastname, :email, :birthday)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
+        if ($isOk) {
+            $userId = $this->connection->lastInsertId();
+        }
 
-        return $isOk;
+        return $userId;
     }
 
     /**
@@ -215,17 +218,17 @@ class DataBaseService
     /**
      * Create an car.
      */
-    public function createCar(string $brand, string $model, DateTime $year, int $place): bool
+    public function createCar(string $brand, string $model, string $color, int $place): bool
     {
         $isOk = false;
 
         $data = [
             'brand' => $brand,
             'model' => $model,
-            'year' => $year->format(DateTime::RFC3339),
+            'color' => $color,
             'place' => $place,
         ];
-        $sql = 'INSERT INTO cars (brand, model, year, place) VALUES (:brand, :model, :year, :place)';
+        $sql = 'INSERT INTO cars (brand, model, color, place) VALUES (:brand, :model, :color, :place)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
@@ -252,7 +255,7 @@ class DataBaseService
     /**
      * Update an car.
      */
-    public function updateCar(int $id, string $brand, string $model, DateTime $year, int $place): bool
+    public function updateCar(int $id, string $brand, string $model, string $color, int $place): bool
     {
         $isOk = false;
 
@@ -260,10 +263,10 @@ class DataBaseService
             'id' => $id,
             'brand' => $brand,
             'model' => $model,
-            'year' => $year->format(DateTime::RFC3339),
+            'color' => $color,
             'place' => $place,
         ];
-        $sql = 'UPDATE cars SET brand = :brand, model = :model, year = :year, place = :place WHERE id = :id;';
+        $sql = 'UPDATE cars SET brand = :brand, model = :model, color = :color, place = :place WHERE id = :id;';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
@@ -287,10 +290,52 @@ class DataBaseService
         return $isOk;
     }
 
+    /**
+     * Create relation bewteen an user and his car.
+     */
+    public function setUserCar(string $userId, string $carId): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'userId' => $userId,
+            'carId' => $carId,
+        ];
+        $sql = 'INSERT INTO users_cars (user_id, car_id) VALUES (:userId, :carId)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given user id.
+     */
+    public function getUserCars(string $userId): array
+    {
+        $userCars = [];
+
+        $data = [
+            'userId' => $userId,
+        ];
+        $sql = '
+            SELECT c.*
+            FROM cars as c
+            LEFT JOIN users_cars as uc ON uc.car_id = c.id
+            WHERE uc.user_id = :userId';
+        $query = $this->connection->prepare($sql);
+        $query->execute($data);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $userCars = $results;
+        }
+
+        return $userCars;
+    }
 
     /**
      * Create a Reservation
-     * 
+     *
      * @param int $id_announcement : Announcement identifier
      * @param int $id_user : User identifier
      * @param DateTime $date : Current date
@@ -316,7 +361,7 @@ class DataBaseService
 
     /**
      * Update a Reservation
-     * 
+     *
      * @param int $id_reservation : Reservation identifier
      * @param int $id_announcement : Announcement identifier
      * @param int $id_user : User identifier
@@ -365,7 +410,7 @@ class DataBaseService
 
     /**
      * Delete a Reservation
-     * 
+     *
      * @param int $id_reservation : Reservation identifier
      * @return bool
      */
