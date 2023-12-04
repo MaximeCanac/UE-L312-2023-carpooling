@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entities\Announcement;
+use App\Entities\Reservation;
 use DateTime;
 
 class AnnouncementsService
@@ -10,19 +11,20 @@ class AnnouncementsService
     /**
      * Create or update an Announcement.
      */
-    public function setAnnouncement(?string $id, string $user_id, string $car_id, string $destination, string $date, string $description, string $price): bool
+    public function setAnnouncement(?string $id, string $destination, string $date, string $description, string $price): bool
     {
-        $isOk = false;
+        $announcementId = '';
 
         $dataBaseService = new DataBaseService();
         $dateDateTime = new DateTime($date);
         if (empty($id)) {
-            $isOk = $dataBaseService->createAnnouncement($user_id, $car_id, $destination, $dateDateTime, $description, $price);
+            $announcementId = $dataBaseService->createAnnouncement($destination, $dateDateTime, $description, $price);
         } else {
-            $isOk = $dataBaseService->updateAnnouncement($id, $user_id, $car_id, $destination, $dateDateTime, $description, $price);
+            $dataBaseService->updateAnnouncement($id, $destination, $dateDateTime, $description, $price);
+            $announcementId = $id;
         }
 
-        return $isOk;
+        return $announcementId;
     }
 
     /**
@@ -38,8 +40,6 @@ class AnnouncementsService
             foreach ($announcementsDTO as $announcementDTO) {
                 $announcement = new Announcement();
                 $announcement->setId($announcementDTO['id']);
-                $announcement->setUserId($announcementDTO['user_id']);
-                $announcement->setCarId($announcementDTO['car_id']);
                 $announcement->setDestination($announcementDTO['destination']);
                 $date = new DateTime($announcementDTO['date']);
                 if ($date !== false) {
@@ -47,6 +47,11 @@ class AnnouncementsService
                 }
                 $announcement->setDescription($announcementDTO['description']);
                 $announcement->setPrice($announcementDTO['price']);
+
+                // Get Reservations of this Announcement:
+                $reservations = $this->getAnnouncementReservations($userDTO['id']);
+                $announcements->setReservations($reservations);
+
                 $announcements[] = $announcement;
             }
         }
@@ -57,7 +62,7 @@ class AnnouncementsService
 
     /**
      * Return the searched announcement
-     * 
+     *
      * @param int $id
      * @return array
      */
@@ -71,8 +76,6 @@ class AnnouncementsService
             foreach ($announcementsDTO as $announcementDTO) {
                 $announcement = new Announcement();
                 $announcement->setId($announcementDTO['id']);
-                $announcement->setUserId($announcementDTO['user_id']);
-                $announcement->setCarId($announcementDTO['car_id']);
                 $announcement->setDestination($announcementDTO['destination']);
                 $date = new DateTime($announcementDTO['date']);
                 if ($date !== false) {
@@ -99,5 +102,42 @@ class AnnouncementsService
         $isOk = $dataBaseService->deleteAnnouncement($id);
 
         return $isOk;
+    }
+
+    /**
+     * Create relation bewteen an announcement and his reservation.
+     */
+    public function setAnnouncementReservation(string $announcementId, string $reservationId): bool
+    {
+        $isOk = false;
+
+        $dataBaseService = new DataBaseService();
+        $isOk = $dataBaseService->setAnnouncementReservation($announcementId, $reservationId);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given user id.
+     */
+    public function getAnnouncementReservations(string $announcementId): array
+    {
+        $announcementReservations = [];
+
+        $dataBaseService = new DataBaseService();
+
+        // Get relation users and cars :
+        $announcementReservationsDTO = $dataBaseService->getAnnouncementReservations($announcementId);
+        if (!empty($announcementReservationsDTO)) {
+            foreach ($announcementReservationsDTO as $announcementReservationDTO) {
+                $reservation = new Reservation();
+                $reservation->setId($announcementReservationDTO['id']);
+                $reservation->setDate($announcementReservationDTO['date']);
+                $reservation->setAnnouncement($announcementReservationDTO['announcement']);
+                $announcementReservations[] = $reservation;
+            }
+        }
+
+        return $announcementReservations;
     }
 }

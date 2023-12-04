@@ -111,24 +111,26 @@ class DataBaseService
     /**
      * Create an Announcement.
      */
-    public function createAnnouncement(int $userId, int $carId, string $destination, DateTime $date, ?string $description, ?float $price): bool
+    public function createAnnouncement(string $destination, DateTime $date, ?string $description, ?float $price): bool
     {
-        $isOk = false;
+        $announcementID = '';
 
         $data = [
-            'user_id' => $userId,
-            'car_id' => $carId,
             'destination' => $destination,
             'date' => $date->format(DateTime::RFC3339),
             'description' => $description,
             'price' => $price
         ];
 
-        $sql = 'INSERT INTO announcements (user_id, car_id, destination, date, description, price) VALUES (:user_id, :car_id, :destination, :date, :description, :price)';
+        $sql = 'INSERT INTO announcements (destination, date, description, price) VALUES (:destination, :date, :description, :price)';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
+        if ($isOk) {
+            $announcementID = $this->connection->lastInsertId();
+        }
 
-        return $isOk;
+        return $announcementID;
+
     }
 
     /**
@@ -176,21 +178,19 @@ class DataBaseService
     /**
      * Update an Announcement.
      */
-    public function updateAnnouncement(int $id, int $userId, int $carId, string $destination, DateTime $date, ?string $description, ?float $price): bool
+    public function updateAnnouncement(int $id, string $destination, DateTime $date, ?string $description, ?float $price): bool
     {
         $isOk = false;
 
         $data = [
             'id' => $id,
-            'user_id' => $userId,
-            'car_id' => $carId,
             'destination' => $destination,
             'date' => $date->format(DateTime::RFC3339),
             'description' => $description,
             'price' => $price
         ];
 
-        $sql = 'UPDATE announcements SET user_id = :user_id, car_id = :car_id, destination = :destination, date = :date, description = :description, price = :price WHERE id = :id';
+        $sql = 'UPDATE announcements SET destination = :destination, date = :date, description = :description, price = :price WHERE id = :id';
         $query = $this->connection->prepare($sql);
         $isOk = $query->execute($data);
 
@@ -213,6 +213,48 @@ class DataBaseService
         $isOk = $query->execute($data);
 
         return $isOk;
+    }
+    /**
+     * Create relation bewteen an user and his car.
+     */
+    public function setAnnouncementsReservations(string $announcementId, string $reservationId): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'announcementId' => $announcementId,
+            'reservationId' => $reservationId,
+        ];
+        $sql = 'INSERT INTO users_cars (announcement_id, reservation_id) VALUES (:announcementId, :reservationId)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given user id.
+     */
+    public function getAnnouncementReservations(string $announcementId): array
+    {
+        $announcementReservations = [];
+
+        $data = [
+            'announcementId' => $announcementId,
+        ];
+        $sql = '
+            SELECT a.*
+            FROM  announcements as a
+            LEFT JOIN announcements_reservations as ar ON ar.reservation_id = a.id
+            WHERE ar.announcement_id = :announcementId';
+        $query = $this->connection->prepare($sql);
+        $query->execute($data);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $announcementReservations = $results;
+        }
+
+        return $announcementReservations;
     }
 
     /**

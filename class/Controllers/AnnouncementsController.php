@@ -22,7 +22,7 @@ class AnnouncementsController
             isset($_POST['price'])) {
             // Create the Announcement :
             $announcementsService = new AnnouncementsService();
-            $isOk = $announcementsService->setAnnouncement(
+            $announcementId = $announcementsService->setAnnouncement(
                 null,
                 $_POST['user_id'],
                 $_POST['car_id'],
@@ -31,10 +31,17 @@ class AnnouncementsController
                 $_POST['description'],
                 $_POST['price']
             );
-            if ($isOk) {
-                $html = 'Annonce créé avec succès.';
+            // Create the announcement reservation relations :
+            $isOk = true;
+            if (!empty($_POST['reservations'])) {
+                foreach ($_POST['reservations'] as $reservationId) {
+                    $isOk = $announcementsService->setAnnouncementReservation($announcementId, $reservationId);
+                }
+            }
+            if ($userId && $isOk) {
+                $html = 'Utilisateur créé avec succès.';
             } else {
-                $html = 'Erreur lors de la création de l\'annonce.';
+                $html = 'Erreur lors de la création de l\'utilisateur.';
             }
         }
 
@@ -54,6 +61,12 @@ class AnnouncementsController
 
         // Get html :
         foreach ($announcements as $announcement) {
+            $announcementsHtml = '';
+            if (!empty($announcement->getReservations())) {
+                foreach ($announcement->getReservations() as $reservation) {
+                    $announcementsHtml .= $reservation->getDate() . ' ' . $reservation->getAnnouncement() . ' ';
+                }
+            }
             $html .=
                 '#' . $announcement->getId() . ' ' .
                 $announcement->getUserId() . ' ' .
