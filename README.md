@@ -1,3 +1,11 @@
 # UE-L312-2023-carpooling
-Projet UE-L312-2023-carpooling
-Maxime CANAC et Julien LAJARDIE
+
+## Description
+Appli de co-voiturage
+## Fonctionnalités
+- Création / modification / suppression et visualisation d'annonce , de voiture , d'utilisateur et de réservation.
+# Auteur
+ - Maxime CANAC
+ - Julien LAJARDIE
+
+

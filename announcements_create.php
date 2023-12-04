@@ -8,8 +8,8 @@ require __DIR__ . '/vendor/autoload.php';
 $controller = new AnnouncementsController();
 echo $controller->createAnnouncement();
 
-$reservationsService = new ReservationsService();
-$reservations = $reservationsService->getReservations();
+/*$reservationsService = new ReservationsService();
+$reservations = $reservationsService->getReservations();*/
 ?>
 
 <p>Création d'une annonce</p>
@@ -26,12 +26,12 @@ $reservations = $reservationsService->getReservations();
     <label for="price">Prix :</label>
     <input type="number" name="price">
     <br />
-    <label for="reservations">Reservations(s) :</label>
-    <?php foreach ($reservations as $reservation): ?>
-        <?php $reservationName = $reservation->getDate() . ' '. $reservation->getAnnouncement() ; ?>
-        <input type="checkbox" name="reservations[]" value="<?php echo $reservation->getId(); ?>"><?php echo $reservationName; ?>
+    <!--<label for="reservations">Reservations(s) :</label>
+    <?php /*foreach ($reservations as $reservation): */?>
+        <?php /*$reservationName = $reservation->getDate() . ' '. $reservation->getAnnouncement() ; */?>
+        <input type="checkbox" name="reservations[]" value="<?php /*echo $reservation->getId(); */?>"><?php /*echo $reservationName; */?>
         <br />
-    <?php endforeach; ?>
-    <br />
+    <?php /*endforeach; */?>
+    <br />-->
     <input type="submit" value="Créer une annonce">
 </form>
