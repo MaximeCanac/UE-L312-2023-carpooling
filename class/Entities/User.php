@@ -12,6 +12,7 @@ class User
     private $email;
     private $birthday;
     private $cars;
+    private $announcements;
 
     public function getId(): string
     {
@@ -70,6 +71,17 @@ class User
     public function setCars(array $cars)
     {
         $this->cars = $cars;
+
+        return $this;
+    }
+    public function getAnnouncements(): ?array
+    {
+        return $this->announcements;
+    }
+
+    public function setAnnouncements(array $announcements)
+    {
+        $this->announcements = $announcements;
 
         return $this;
     }

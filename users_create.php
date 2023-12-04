@@ -2,6 +2,7 @@
 
 use App\Controllers\UsersController;
 use App\Services\CarsService;
+use App\Services\AnnouncementsService;
 
 require __DIR__ . '/vendor/autoload.php';
 
@@ -10,6 +11,9 @@ echo $controller->createUser();
 
 $carsService = new CarsService();
 $cars = $carsService->getCars();
+
+$announcementsService = new AnnouncementsService();
+$announcements = $announcementsService->getAnnouncements();
 ?>
 
 <p>Création d'un utilisateur</p>
@@ -30,6 +34,13 @@ $cars = $carsService->getCars();
     <?php foreach ($cars as $car): ?>
         <?php $carName = $car->getBrand() . ' ' . $car->getModel() . ' ' . $car->getColor(); ?>
         <input type="checkbox" name="cars[]" value="<?php echo $car->getId(); ?>"><?php echo $carName; ?>
+        <br />
+    <?php endforeach; ?>
+    <br />
+    <label for="announcements">Annonce(s) :</label>
+    <?php foreach ($announcements as $announcement): ?>
+        <?php $announcementName = $announcement->getDestination() . ' ' . $announcement->getDate()->format(DateTime::RFC3339) . ' ' . $announcement->getDescription(). ' ' . $announcement->getPrice(); ?>
+        <input type="checkbox" name="announcements[]" value="<?php echo $announcement->getId(); ?>"><?php echo $announcementName; ?>
         <br />
     <?php endforeach; ?>
     <br />

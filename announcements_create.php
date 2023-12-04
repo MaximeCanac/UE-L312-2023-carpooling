@@ -10,12 +10,6 @@ echo $controller->createAnnouncement();
 
 <p>Création d'une annonce</p>
 <form method="post" action="announcements_create.php" name ="announcementCreateForm">
-    <label for="user_id">user_id :</label>
-    <input type="text" name="user_id">
-    <br />
-    <label for="car_id">car_id :</label>
-    <input type="text" name="car_id">
-    <br />
     <label for="destination">Destination :</label>
     <input type="text" name="destination">
     <br />

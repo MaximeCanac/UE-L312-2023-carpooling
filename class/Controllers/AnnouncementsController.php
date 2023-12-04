@@ -35,9 +35,9 @@ class AnnouncementsController
                 }
             }
             if ($announcementId && $isOk) {
-                $html = 'Utilisateur créé avec succès.';
+                $html = 'Annonce créé avec succès.';
             } else {
-                $html = 'Erreur lors de la création de l\'utilisateur.';
+                $html = 'Erreur lors de la création de l\'Annonce.';
             }
         }
 
@@ -68,7 +68,8 @@ class AnnouncementsController
                 $announcement->getDestination() . ' ' .
                 $announcement->getDate()->format('d-m-Y') . ' ' .
                 $announcement->getDescription() . ' ' .
-                $announcement->getPrice() . '<br />' ;
+                $announcement->getPrice() . ' '.
+                $announcementsHtml. '<br />';
         }
 
         return $html;

@@ -107,6 +107,48 @@ class DataBaseService
 
         return $isOk;
     }
+    /**
+     * Create relation bewteen an user and his car.
+     */
+    public function setUserAnnouncement(string $userId, string $announcementId): bool
+    {
+        $isOk = false;
+
+        $data = [
+            'userId' => $userId,
+            'announcementId' => $announcementId,
+        ];
+        $sql = 'INSERT INTO users_announcements (user_id, announcement_id) VALUES (:userId, :$announcementId)';
+        $query = $this->connection->prepare($sql);
+        $isOk = $query->execute($data);
+
+        return $isOk;
+    }
+
+    /**
+     * Get cars of given user id.
+     */
+    public function getUserAnnouncements(string $userId): array
+    {
+        $userAnnouncements = [];
+
+        $data = [
+            'userId' => $userId,
+        ];
+        $sql = '
+            SELECT a.*
+            FROM announcements as a
+            LEFT JOIN users_announcements as ua ON ua.announcement_id = a.id
+            WHERE ua.user_id = :userId';
+        $query = $this->connection->prepare($sql);
+        $query->execute($data);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        if (!empty($results)) {
+            $userAnnouncements = $results;
+        }
+
+        return $userAnnouncements;
+    }
 
     /**
      * Create an Announcement.
@@ -173,8 +215,6 @@ class DataBaseService
 
 
 
-
-
     /**
      * Update an Announcement.
      */
@@ -215,7 +255,7 @@ class DataBaseService
         return $isOk;
     }
     /**
-     * Create relation bewteen an user and his car.
+     * Create relation bewteen an announcement and his reservation.
      */
     public function setAnnouncementReservation(string $announcementId, string $reservationId): bool
     {
@@ -233,7 +273,7 @@ class DataBaseService
     }
 
     /**
-     * Get cars of given user id.
+     * Get reservations of given announcement id.
      */
     public function getAnnouncementReservations(string $announcementId): array
     {
@@ -446,9 +486,6 @@ class DataBaseService
 
         return $reservations;
     }
-
-
-
 
     /**
      * Delete a Reservation

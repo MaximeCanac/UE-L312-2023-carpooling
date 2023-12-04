@@ -36,6 +36,9 @@
         <li class="nav-item">
             <a class="nav-link" href="#" onclick="openTab(event, 'cars')">Cars</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="openTab(event, 'reservations')">Reservations</a>
+        </li>
     </ul>
 
     <div id="announcements" class="container tab-pane active">
@@ -60,6 +63,14 @@
         <iframe src="cars_read.php"></iframe>
         <iframe src="cars_update.php"></iframe>
         <iframe src="cars_delete.php"></iframe>
+    </div>
+
+    <div id="reservations" class="container tab-pane">
+        <!-- Contenu pour les reservations -->
+        <iframe src="reservations_create.php"></iframe>
+        <iframe src="reservations_read.php"></iframe>
+        <iframe src="reservations_update.php"></iframe>
+        <iframe src="reservations_delete.php"></iframe>
     </div>
 
 </div>
