@@ -49,8 +49,8 @@ class AnnouncementsService
                 $announcement->setPrice($announcementDTO['price']);
 
                 // Get Reservations of this Announcement:
-                $reservations = $this->getAnnouncementReservations($userDTO['id']);
-                $announcements->setReservations($reservations);
+                $reservations = $this->getAnnouncementReservations($announcementDTO['id']);
+                $announcement->setReservations($reservations);
 
                 $announcements[] = $announcement;
             }
@@ -118,7 +118,7 @@ class AnnouncementsService
     }
 
     /**
-     * Get cars of given user id.
+     * Get cars of given announcement id.
      */
     public function getAnnouncementReservations(string $announcementId): array
     {
@@ -126,7 +126,7 @@ class AnnouncementsService
 
         $dataBaseService = new DataBaseService();
 
-        // Get relation users and cars :
+        // Get relation announcements and cars :
         $announcementReservationsDTO = $dataBaseService->getAnnouncementReservations($announcementId);
         if (!empty($announcementReservationsDTO)) {
             foreach ($announcementReservationsDTO as $announcementReservationDTO) {

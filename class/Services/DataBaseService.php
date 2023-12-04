@@ -217,7 +217,7 @@ class DataBaseService
     /**
      * Create relation bewteen an user and his car.
      */
-    public function setAnnouncementsReservations(string $announcementId, string $reservationId): bool
+    public function setAnnouncementReservation(string $announcementId, string $reservationId): bool
     {
         $isOk = false;
 

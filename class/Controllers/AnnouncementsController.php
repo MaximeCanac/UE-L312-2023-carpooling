@@ -14,9 +14,7 @@ class AnnouncementsController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user_id']) &&
-            isset($_POST['car_id']) &&
-            isset($_POST['destination']) &&
+        if (isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
             isset($_POST['price'])) {
@@ -24,8 +22,6 @@ class AnnouncementsController
             $announcementsService = new AnnouncementsService();
             $announcementId = $announcementsService->setAnnouncement(
                 null,
-                $_POST['user_id'],
-                $_POST['car_id'],
                 $_POST['destination'],
                 $_POST['date'],
                 $_POST['description'],
@@ -38,7 +34,7 @@ class AnnouncementsController
                     $isOk = $announcementsService->setAnnouncementReservation($announcementId, $reservationId);
                 }
             }
-            if ($userId && $isOk) {
+            if ($announcementId && $isOk) {
                 $html = 'Utilisateur créé avec succès.';
             } else {
                 $html = 'Erreur lors de la création de l\'utilisateur.';
@@ -69,8 +65,6 @@ class AnnouncementsController
             }
             $html .=
                 '#' . $announcement->getId() . ' ' .
-                $announcement->getUserId() . ' ' .
-                $announcement->getCarId() . ' ' .
                 $announcement->getDestination() . ' ' .
                 $announcement->getDate()->format('d-m-Y') . ' ' .
                 $announcement->getDescription() . ' ' .
@@ -88,8 +82,7 @@ class AnnouncementsController
         $html = '';
 
         // If the form have been submitted :
-        if (isset($_POST['user_id']) &&
-            isset($_POST['car_id']) &&
+        if (isset($_POST['id']) &&
             isset($_POST['destination']) &&
             isset($_POST['date']) &&
             isset($_POST['description']) &&
@@ -97,8 +90,7 @@ class AnnouncementsController
             // Update the Announcement :
             $announcementsService = new AnnouncementsService();
             $isOk = $announcementsService->setAnnouncement(
-                $_POST['user_id'],
-                $_POST['car_id'],
+                $_POST['id'],
                 $_POST['destination'],
                 $_POST['date'],
                 $_POST['description'],
