@@ -9,8 +9,8 @@ $message = NULL;
 
 if(isset($_POST['create_reservation'])) {
 
-    if(!empty($_POST['user_id']) && !empty($_POST['announcement_id']) && !empty($_POST['date'])) {
-        if($controller->createReservation($_POST['announcement_id'], $_POST['user_id'], $_POST['date'])) {
+    if(!empty($_POST['date'])) {
+        if($controller->createReservation($_POST['date'])) {
             $message = '<p style="color:green;"><b>Succès:</b> Réservation crée.</p>';
         }
     }
@@ -24,12 +24,6 @@ if(isset($_POST['create_reservation'])) {
 <p>Création d'une annonce</p>
 <?= $message ?>
 <form method="post" action="reservations_create.php" name ="reservationCreateForm">
-    <label for="user_id">user_id :</label>
-    <input type="text" name="user_id">
-    <br />
-    <label for="announcement_id">announcement_id :</label>
-    <input type="text" name="announcement_id">
-    <br />
     <label for="date">Date de la réservation au format dd-mm-yyyy :</label>
     <input type="text" name="date">
     <br />

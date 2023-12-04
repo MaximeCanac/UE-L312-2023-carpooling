@@ -1,11 +1,15 @@
 <?php
 
 use App\Controllers\AnnouncementsController;
+use App\Services\ReservationsService;
 
 require __DIR__ . '/vendor/autoload.php';
 
 $controller = new AnnouncementsController();
 echo $controller->createAnnouncement();
+
+$reservationsService = new ReservationsService();
+$reservations = $reservationsService->getReservations();
 ?>
 
 <p>Création d'une annonce</p>
@@ -20,7 +24,14 @@ echo $controller->createAnnouncement();
     <input type="text" name="description">
     <br />
     <label for="price">Prix :</label>
-    <input type="float" name="price">
+    <input type="number" name="price">
+    <br />
+    <label for="reservations">Reservations(s) :</label>
+    <?php foreach ($reservations as $reservation): ?>
+        <?php $reservationName = $reservation->getDate() . ' '. $reservation->getAnnouncement() ; ?>
+        <input type="checkbox" name="reservations[]" value="<?php echo $reservation->getId(); ?>"><?php echo $reservationName; ?>
+        <br />
+    <?php endforeach; ?>
     <br />
     <input type="submit" value="Créer une annonce">
 </form>
