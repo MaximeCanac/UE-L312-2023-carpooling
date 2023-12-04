@@ -10,9 +10,9 @@ class DataBaseService
 {
     const HOST = '127.0.0.1';
     const PORT = '3306';
-    const DATABASE_NAME = 'carpooling';
+    const DATABASE_NAME = 'crpooling';
     const MYSQL_USER = 'root';
-    const MYSQL_PASSWORD = 'password';
+    const MYSQL_PASSWORD = '';
 
     private $connection;
 
@@ -146,6 +146,30 @@ class DataBaseService
         return $announcements;
     }
 
+
+    /**
+     * Return the searched Announcement.
+     */
+    public function getAnnouncement(int $id): array
+    {
+        $announcements = [];
+
+        $req = 'SELECT * FROM announcements WHERE id=?';
+        $query = $this->connection->prepare($req);
+        $query->execute(array($id));
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($results)) {
+            $announcements = $results;
+        }
+
+        return $announcements;
+    }
+
+
+
+
+
     /**
      * Update an Announcement.
      */
@@ -261,6 +285,102 @@ class DataBaseService
         $isOk = $query->execute($data);
 
         return $isOk;
+    }
+
+
+    /**
+     * Create a Reservation
+     * 
+     * @param int $id_announcement : Announcement identifier
+     * @param int $id_user : User identifier
+     * @param DateTime $date : Current date
+     * @return bool
+     */
+    public function createReservation($id_announcement, $id_user, DateTime $date): bool {
+        $returnBool = false;
+
+        $data = array(
+            'id_announcement' => $id_announcement,
+            'id_user' => $id_user,
+            ':reservation_date' => $date->format(DateTime::W3C)
+        );
+
+        $sql = 'INSERT INTO reservations(id_announcement, id_user, date) VALUES (:id_announcement, :id_user, :reservation_date)';
+        $query = $this->connection->prepare($sql);
+        $returnBool = $query->execute($data);
+
+        return $returnBool;
+    }
+
+
+
+    /**
+     * Update a Reservation
+     * 
+     * @param int $id_reservation : Reservation identifier
+     * @param int $id_announcement : Announcement identifier
+     * @param int $id_user : User identifier
+     * @param DateTime $date : Current date
+     * @return bool
+     */
+    public function updateReservation($id_reservation, $id_announcement, $id_user, DateTime $date): bool {
+        $returnBool = false;
+
+        $data = array(
+            'id_reservation' => $id_reservation,
+            'id_announcement' => $id_announcement,
+            'id_user' => $id_user,
+            'reservation_date' => $date->format(DateTime::W3C)
+        );
+
+        $sql = 'UPDATE reservations SET id_reservation = :id_reservation, id_announcement = :id_announcement, id_user = :id_user, date = :reservation_date;';
+        $query = $this->connection->prepare($sql);
+        $returnBool = $query->execute($data);
+
+        return $returnBool;
+    }
+
+
+
+    /**
+     * Return all Reservations.
+     */
+    public function getReservations(): array
+    {
+        $reservations = [];
+
+        $sql = 'SELECT * FROM reservations';
+        $query = $this->connection->query($sql);
+        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!empty($results)) {
+            $reservations = $results;
+        }
+
+        return $reservations;
+    }
+
+
+
+
+    /**
+     * Delete a Reservation
+     * 
+     * @param int $id_reservation : Reservation identifier
+     * @return bool
+     */
+    public function deleteReservation(int $id_reservation): bool {
+        $returnBool = false;
+
+        $data = array(
+            'id_reservation' => $id_reservation,
+        );
+
+        $sql = 'DELETE FROM reservations WHERE id_reservation = :id_reservation';
+        $query = $this->connection->prepare($sql);
+        $returnBool = $query->execute($data);
+
+        return $returnBool;
     }
 
 }
